@@ -4,7 +4,7 @@ This repository contains the specification file for [People Data Labs APIs](http
 
 In order to use the APIs, you need to have an API key. You can get the API key by signing up on the [People Data Labs Website](https://dashboard.peopledatalabs.com/).
 
-[![Run in Postman](https://run.pstmn.io/button.svg)]()
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32867294-ef278c05-d32d-47a1-b147-b819bc96238a?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D32867294-ef278c05-d32d-47a1-b147-b819bc96238a%26entityType%3Dcollection%26workspaceId%3Dbbcb7a7c-1696-4864-8cb7-5163c79dd459)
 
 ## API Endpoints
 
