@@ -34,10 +34,10 @@ In order to use the APIs, you need to have an API key. You can get the API key b
 
 - [Skill Enrichment API](https://docs.peopledatalabs.com/docs/skill-enrichment-api)
 
-- [Company Cleaner API](https://docs.peopledatalabs.com/docs/company-cleaner-api)
+- [Company Cleaner API](https://docs.peopledatalabs.com/docs/cleaner-apis-reference)
 
-- [Location Cleaner API](https://docs.peopledatalabs.com/docs/location-cleaner-api)
+- [Location Cleaner API](https://docs.peopledatalabs.com/docs/cleaner-apis-reference)
 
-- [School Cleaner API](https://docs.peopledatalabs.com/docs/school-cleaner-api)
+- [School Cleaner API](https://docs.peopledatalabs.com/docs/cleaner-apis-reference)
 
 - [Subject Request API](https://docs.peopledatalabs.com/docs/subject-request-api)
