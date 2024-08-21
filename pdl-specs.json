@@ -9326,6 +9326,11 @@
                                         "type": "string",
                                         "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored."
                                     },
+                                    "count_only": {
+                                        "type": "boolean",
+                                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run.",
+                                        "default": false
+                                    },
                                     "size": {
                                         "type": "integer",
                                         "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
