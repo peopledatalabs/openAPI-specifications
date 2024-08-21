@@ -9311,78 +9311,64 @@
                         "APIKeyHeader": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "The content type",
-                        "schema": {
-                            "type": "string",
-                            "default": "application/json",
-                            "enum": [
-                                "application/json"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "query",
-                        "in": "query",
-                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sql",
-                        "in": "query",
-                        "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 100,
-                            "minimum": 1,
-                            "format": "int32",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 9999,
-                            "minimum": 0,
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "titlecase",
-                        "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
-                        }
-                    },
-                    {
-                        "name": "pretty",
-                        "in": "query",
-                        "description": "Whether the output should have human-readable indentation.",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "query": {
+                                        "type": "string",
+                                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference."
+                                    },
+                                    "sql": {
+                                        "type": "string",
+                                        "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored."
+                                    },
+                                    "size": {
+                                        "type": "integer",
+                                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
+                                        "maximum": 100,
+                                        "minimum": 1,
+                                        "format": "int32",
+                                        "default": 1
+                                    },
+                                    "from": {
+                                        "type": "integer",
+                                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
+                                        "maximum": 9999,
+                                        "minimum": 0,
+                                        "format": "int32",
+                                        "default": 0
+                                    },
+                                    "titlecase": {
+                                        "type": "boolean",
+                                        "description": "Setting titlecase to true will will titlecase any records returned",
+                                        "default": false
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation.",
+                                        "default": false
+                                    }
+                                },
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "query"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "sql"
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Company Found",
