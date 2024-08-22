@@ -8394,6 +8394,15 @@
                         }
                     },
                     {
+                        "name": "count_only",
+                        "in": "query",
+                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
                         "name": "scroll_token",
                         "in": "query",
                         "description": "An offset key for paginating between batches. Can be used for any number of records. Each search API response returns a scroll_token which can be used to fetch the next size records.",
@@ -8471,86 +8480,82 @@
                         "APIKeyHeader": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "The content type",
-                        "schema": {
-                            "type": "string",
-                            "default": "application/json",
-                            "enum": [
-                                "application/json"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "query",
-                        "in": "query",
-                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference. You can build a query using the Query Builder Tool (https://dashboard.peopledatalabs.com/tools/query-builder)",
-                        "schema": {
-                            "type": "string",
-                            "example": "{\"query\": {\"term\": {\"job_company_name\": \"people data labs\"}}}"
-                        }
-                    },
-                    {
-                        "name": "sql",
-                        "in": "query",
-                        "description": "A SQL query of the format: SELECT * FROM person WHERE XXX, where XXX is a standard SQL boolean query involving our person fields",
-                        "schema": {
-                            "type": "string",
-                            "example": "SELECT * FROM person WHERE job_company_name='people data labs'"
-                        }
-                    },
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 100,
-                            "minimum": 1,
-                            "format": "int32",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "scroll_token",
-                        "in": "query",
-                        "description": "An offset key for paginating between batches. Can be used for any number of records. Each search API response returns a scroll_token which can be used to fetch the next size records.",
-                        "schema": {
-                            "type": "string",
-                            "example": "104$14.278746"
-                        }
-                    },
-                    {
-                        "name": "dataset",
-                        "in": "query",
-                        "description": "The dataset category to return records from. Can be multiple comma seperated categories or all",
-                        "schema": {
-                            "type": "string",
-                            "default": "resume"
-                        }
-                    },
-                    {
-                        "name": "titlecase",
-                        "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
-                        }
-                    },
-                    {
-                        "name": "pretty",
-                        "in": "query",
-                        "description": "Whether the output should have human-readable indentation.",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "query": {
+                                        "type": "string",
+                                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference.",
+                                        "example": "{\"query\": {\"term\": {\"industry\": \"computer software\"}}}"
+                                    },
+                                    "sql": {
+                                        "type": "string",
+                                        "description": "A SQL query of the format: SELECT * FROM person WHERE XXX, where XXX is a standard SQL boolean query involving our person fields",
+                                        "example": "SELECT * FROM person WHERE industry ='computer software'"
+                                    },
+                                    "size": {
+                                        "type": "integer",
+                                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
+                                        "maximum": 100,
+                                        "minimum": 1,
+                                        "format": "int32",
+                                        "default": 1
+                                    },
+                                    "count_only": {
+                                        "type": "boolean",
+                                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                                        "default": false
+                                    },
+                                    "from": {
+                                        "type": "integer",
+                                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
+                                        "maximum": 9999,
+                                        "minimum": 0,
+                                        "format": "int32",
+                                        "default": 0
+                                    },
+                                    "scroll_token": {
+                                        "type": "string",
+                                        "description": "Each search API response returns a scroll_token. Include it in the next request to fetch the next size matching records",
+                                        "example": "104$14.278746"
+                                    },
+                                    "dataset": {
+                                        "type": "string",
+                                        "description": "Specifies which dataset(s) the API should search against",
+                                        "default": "resume",
+                                        "example": "all"
+                                    },
+                                    "titlecase": {
+                                        "type": "boolean",
+                                        "description": "Setting titlecase to true will will titlecase any records returned",
+                                        "default": false
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation.",
+                                        "default": false
+                                    }
+                                },
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "query"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "sql"
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Person Found",
@@ -9240,6 +9245,15 @@
                         }
                     },
                     {
+                        "name": "count_only",
+                        "in": "query",
+                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
                         "name": "from",
                         "in": "query",
                         "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
@@ -9249,6 +9263,15 @@
                             "minimum": 0,
                             "format": "int32",
                             "default": 0
+                        }
+                    },
+                    {
+                        "name": "scroll_token",
+                        "in": "query",
+                        "description": "Setting titlecase to true will will titlecase any records returned",
+                        "schema": {
+                            "type": "string",
+                            "example": "104$14.278746"
                         }
                     },
                     {
@@ -9320,16 +9343,13 @@
                                 "properties": {
                                     "query": {
                                         "type": "string",
-                                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference."
+                                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference",
+                                        "example": "{\"query\": {\"term\": {\"industry\": \"computer software\"}}}"
                                     },
                                     "sql": {
                                         "type": "string",
-                                        "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored."
-                                    },
-                                    "count_only": {
-                                        "type": "boolean",
-                                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run.",
-                                        "default": false
+                                        "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving our company fields",
+                                        "example": "SELECT * FROM person WHERE industry ='computer software'"
                                     },
                                     "size": {
                                         "type": "integer",
@@ -9339,6 +9359,11 @@
                                         "format": "int32",
                                         "default": 1
                                     },
+                                    "count_only": {
+                                        "type": "boolean",
+                                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                                        "default": false
+                                    },
                                     "from": {
                                         "type": "integer",
                                         "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
@@ -9347,6 +9372,11 @@
                                         "format": "int32",
                                         "default": 0
                                     },
+                                    "scroll_token": {
+                                        "type": "string",
+                                        "description": "Each search API response returns a scroll_token. Include it in the next request to fetch the next size matching records",
+                                        "example": "104$14.278746"
+                                    },
                                     "titlecase": {
                                         "type": "boolean",
                                         "description": "Setting titlecase to true will will titlecase any records returned",
@@ -9354,7 +9384,7 @@
                                     },
                                     "pretty": {
                                         "type": "boolean",
-                                        "description": "Whether the output should have human-readable indentation.",
+                                        "description": "Whether the output should have human-readable indentation",
                                         "default": false
                                     }
                                 },
