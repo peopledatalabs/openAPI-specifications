@@ -4357,13 +4357,13 @@
                         "type": "string",
                         "description": "A person's last name"
                     },
-                    "gender": {
+                    "sex": {
                         "type": "string",
                         "enum": [
                             "male",
                             "female"
                         ],
-                        "description": "The person's gender"
+                        "description": "The person's sex"
                     },
                     "birth_year": {
                         "type": "string",
@@ -6184,6 +6184,51 @@
                     }
                 }
             },
+            "PersonRetrieve": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "enum": [
+                            200,
+                            400,
+                            401,
+                            402,
+                            404,
+                            405,
+                            429
+                        ],
+                        "description": "The return status code for individual Person ID request"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Profiles"
+                    },
+                    "billed": {
+                        "type": "boolean",
+                        "description": "Defines if the user was billed for this request."
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "description": "User supplied metadata that is returned with the request"
+                    }
+                },
+                "required": [
+                    "billed",
+                    "data",
+                    "status"
+                ]
+            },
+            "PersonRetrieveBulk": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PersonRetrieve"
+                        }
+                    }
+                }
+            },
             "CompanyLocation": {
                 "type": "object",
                 "properties": {
@@ -7792,7 +7837,8 @@
                         "in": "query",
                         "description": "The PDL ID of the person to enrich",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "qEnOZ5Oh0poWnQ1luFBfVw_0000"
                         }
                     },
                     {
@@ -7800,7 +7846,8 @@
                         "in": "query",
                         "description": "The person's full name, at least first and last",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jennifer C. Jackson"
                         }
                     },
                     {
@@ -7808,7 +7855,8 @@
                         "in": "query",
                         "description": "The person's first name",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jennifer"
                         }
                     },
                     {
@@ -7816,7 +7864,8 @@
                         "in": "query",
                         "description": "The person's last name",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jackson"
                         }
                     },
                     {
@@ -7824,7 +7873,8 @@
                         "in": "query",
                         "description": "The person's middle name",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Cassandra"
                         }
                     },
                     {
@@ -7832,7 +7882,8 @@
                         "in": "query",
                         "description": "A location in which a person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Medford, OR USA"
                         }
                     },
                     {
@@ -7840,7 +7891,8 @@
                         "in": "query",
                         "description": "A street address in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "1234 Main Street"
                         }
                     },
                     {
@@ -7848,7 +7900,8 @@
                         "in": "query",
                         "description": "A locality in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Boise"
                         }
                     },
                     {
@@ -7856,7 +7909,8 @@
                         "in": "query",
                         "description": "A state or region in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Idaho"
                         }
                     },
                     {
@@ -7864,15 +7918,17 @@
                         "in": "query",
                         "description": "A country in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "United States"
                         }
                     },
                     {
                         "name": "postal_code",
                         "in": "query",
-                        "description": "The postal code in which the person lives",
+                        "description": "The postal code where the person lives. If there is no value for country, the postal code is assumed to be US",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "83701"
                         }
                     },
                     {
@@ -7880,7 +7936,8 @@
                         "in": "query",
                         "description": "A name, website, or social url of a company where the person has worked",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Amazon"
                         }
                     },
                     {
@@ -7888,7 +7945,8 @@
                         "in": "query",
                         "description": "A name, website, or social url of a university or college the person has attended",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "University of Iowa"
                         }
                     },
                     {
@@ -7896,7 +7954,8 @@
                         "in": "query",
                         "description": "A phone number the person has used",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "+1 555-234-1234"
                         }
                     },
                     {
@@ -7904,15 +7963,17 @@
                         "in": "query",
                         "description": "An email the person has used",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "renee.c.paulsen1959@yahoo.com"
                         }
                     },
                     {
                         "name": "email_hash",
                         "in": "query",
-                        "description": "A sha256 email hash",
+                        "description": "A SHA-256 or MD5 email hash",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "e206e6cd7fa5f9499fd6d2d943dcf7d9c1469bad351061483f5ce7181663b8d4"
                         }
                     },
                     {
@@ -7920,52 +7981,26 @@
                         "in": "query",
                         "description": "A social profile the person has used. https://docs.peopledatalabs.com/docs/social-networks",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "https://linkedin.com/in/seanthorne"
                         }
                     },
                     {
                         "name": "lid",
                         "in": "query",
-                        "description": "A LinkedIn numerical ID",
+                        "description": "The person's LinkedIn ID",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "145991517"
                         }
                     },
                     {
                         "name": "birth_date",
                         "in": "query",
-                        "description": "The person's birth date. Either the year, or a full birth date",
+                        "description": "The person's birth date: either the year or a full birth date in the format YYYY-MM-DD",
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "min_likelihood",
-                        "in": "query",
-                        "description": "The minimum likelihood score a response must possess in order to return a 200",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 10,
-                            "minimum": 0,
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "required",
-                        "in": "query",
-                        "description": "Parameter specifying the fields and data points a response must have to return a 200",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "titlecase",
-                        "in": "query",
-                        "description": "Setting titlecase to true will titlecase the person data in 200 responses.",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
+                            "type": "string",
+                            "example": "1996-10-01"
                         }
                     },
                     {
@@ -7973,13 +8008,53 @@
                         "in": "query",
                         "description": "A comma-separated string of fields that you would like the response to include. eg. \"names.clean,emails.address\". Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\".",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "full_name,emails.address"
+                        }
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Whether the output should have human-readable indentation",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "min_likelihood",
+                        "in": "query",
+                        "description": "The minimum likelihood score that a response must have in order to count as a match",
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 10,
+                            "minimum": 0,
+                            "format": "int32",
+                            "default": 2
                         }
                     },
                     {
                         "name": "include_if_matched",
                         "in": "query",
                         "description": "If set to true, includes a top-level (alongside \"data\", \"status\", etc) field \"matched\" which includes a value for each queried field parameter that was \"matched-on\" during our internal query.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "required",
+                        "in": "query",
+                        "description": "The fields a response must have in order to count as a match",
+                        "schema": {
+                            "type": "string",
+                            "example": "education AND (emails OR phone_numbers)"
+                        }
+                    },
+                    {
+                        "name": "titlecase",
+                        "in": "query",
+                        "description": "Setting titlecase to true will titlecase the person data in 200 responses.",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -8047,7 +8122,8 @@
                         "in": "query",
                         "description": "The person's full name, at least first and last",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jennifer C. Jackson"
                         }
                     },
                     {
@@ -8055,7 +8131,8 @@
                         "in": "query",
                         "description": "The person's first name",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jennifer"
                         }
                     },
                     {
@@ -8063,7 +8140,8 @@
                         "in": "query",
                         "description": "The person's last name",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jackson"
                         }
                     },
                     {
@@ -8071,7 +8149,8 @@
                         "in": "query",
                         "description": "The person's middle name",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Cassandra"
                         }
                     },
                     {
@@ -8079,7 +8158,8 @@
                         "in": "query",
                         "description": "A location in which a person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Medford, OR USA"
                         }
                     },
                     {
@@ -8087,7 +8167,8 @@
                         "in": "query",
                         "description": "A street address in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "1234 Main Street"
                         }
                     },
                     {
@@ -8095,7 +8176,8 @@
                         "in": "query",
                         "description": "A locality in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Boise"
                         }
                     },
                     {
@@ -8103,7 +8185,8 @@
                         "in": "query",
                         "description": "A state or region in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Idaho"
                         }
                     },
                     {
@@ -8111,15 +8194,17 @@
                         "in": "query",
                         "description": "A country in which the person lives",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "United States"
                         }
                     },
                     {
                         "name": "postal_code",
                         "in": "query",
-                        "description": "The postal code in which the person lives",
+                        "description": "The postal code where the person lives. If there is no value for country, the postal code is assumed to be US",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "83701"
                         }
                     },
                     {
@@ -8127,7 +8212,8 @@
                         "in": "query",
                         "description": "A name, website, or social url of a company where the person has worked",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Amazon"
                         }
                     },
                     {
@@ -8135,7 +8221,8 @@
                         "in": "query",
                         "description": "A name, website, or social url of a university or college the person has attended",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "University of Iowa"
                         }
                     },
                     {
@@ -8143,7 +8230,8 @@
                         "in": "query",
                         "description": "A phone number the person has used",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "+1 555-234-1234"
                         }
                     },
                     {
@@ -8151,7 +8239,8 @@
                         "in": "query",
                         "description": "An email the person has used",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "renee.c.paulsen1959@yahoo.com"
                         }
                     },
                     {
@@ -8159,7 +8248,8 @@
                         "in": "query",
                         "description": "A sha256 email hash",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "e206e6cd7fa5f9499fd6d2d943dcf7d9c1469bad351061483f5ce7181663b8d4"
                         }
                     },
                     {
@@ -8167,43 +8257,35 @@
                         "in": "query",
                         "description": "A social profile the person has used. https://docs.peopledatalabs.com/docs/social-networks",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "https://linkedin.com/in/seanthorne"
                         }
                     },
                     {
                         "name": "lid",
                         "in": "query",
-                        "description": "A LinkedIn numerical ID",
+                        "description": "The person's LinkedIn ID",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "145991517"
                         }
                     },
                     {
                         "name": "birth_date",
                         "in": "query",
-                        "description": "The person's birth date. Either the year, or a full birth date",
+                        "description": "The person's birth date: either the year or a full birth date in the format YYYY-MM-DD",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "1996-10-01"
                         }
                     },
                     {
-                        "name": "min_likelihood",
+                        "name": "pretty",
                         "in": "query",
-                        "description": "The minimum likelihood score a response must possess in order to return a 200",
+                        "description": "Whether the output should have human-readable indentation",
                         "schema": {
-                            "type": "integer",
-                            "maximum": 10,
-                            "minimum": 0,
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "required",
-                        "in": "query",
-                        "description": "Parameter specifying the fields and data points a response must have to return a 200",
-                        "schema": {
-                            "type": "string"
+                            "type": "boolean",
+                            "default": false
                         }
                     },
                     {
@@ -8216,17 +8298,9 @@
                         }
                     },
                     {
-                        "name": "data_include",
-                        "in": "query",
-                        "description": "A comma-separated string of fields that you would like the response to include. eg. \"names.clean,emails.address\". Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\".",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "name": "include_if_matched",
                         "in": "query",
-                        "description": "If set to true, includes a top-level (alongside \"data\", \"status\", etc) field \"matched\" which includes a value for each queried field parameter that was \"matched-on\" during our internal query.",
+                        "description": "If true, the response will include the field matches.matched_on that contains a list of every query input that matched this profile",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -8292,17 +8366,19 @@
                     {
                         "name": "query",
                         "in": "query",
-                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference.",
+                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference. You can build a query using the Query Builder Tool (https://dashboard.peopledatalabs.com/tools/query-builder)",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "{\"query\": {\"term\": {\"job_company_name\": \"people data labs\"}}}"
                         }
                     },
                     {
                         "name": "sql",
                         "in": "query",
-                        "description": "A SQL query of the format: SELECT * FROM person WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored.",
+                        "description": "A SQL query of the format: SELECT * FROM person WHERE XXX, where XXX is a standard SQL boolean query involving our person fields",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "SELECT * FROM person WHERE job_company_name='people data labs'"
                         }
                     },
                     {
@@ -8318,15 +8394,12 @@
                         }
                     },
                     {
-                        "name": "from",
+                        "name": "count_only",
                         "in": "query",
-                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
+                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
                         "schema": {
-                            "type": "integer",
-                            "maximum": 9999,
-                            "minimum": 0,
-                            "format": "int32",
-                            "default": 0
+                            "type": "boolean",
+                            "default": false
                         }
                     },
                     {
@@ -8335,7 +8408,16 @@
                         "description": "An offset key for paginating between batches. Can be used for any number of records. Each search API response returns a scroll_token which can be used to fetch the next size records.",
                         "schema": {
                             "type": "string",
-                            "default": ""
+                            "example": "104$14.278746"
+                        }
+                    },
+                    {
+                        "name": "dataset",
+                        "in": "query",
+                        "description": "The dataset category to return records from. Can be multiple comma seperated categories or all",
+                        "schema": {
+                            "type": "string",
+                            "default": "resume"
                         }
                     },
                     {
@@ -8354,15 +8436,6 @@
                         "schema": {
                             "type": "boolean",
                             "default": false
-                        }
-                    },
-                    {
-                        "name": "dataset",
-                        "in": "query",
-                        "description": "The dataset category to return records from. Can be multiple comma seperated categories or all",
-                        "schema": {
-                            "type": "string",
-                            "default": "resume"
                         }
                     }
                 ],
@@ -8407,96 +8480,82 @@
                         "APIKeyHeader": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "The content type",
-                        "schema": {
-                            "type": "string",
-                            "default": "application/json",
-                            "enum": [
-                                "application/json"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "query",
-                        "in": "query",
-                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sql",
-                        "in": "query",
-                        "description": "A SQL query of the format: SELECT * FROM person WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 1000 (inclusive)",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 1000,
-                            "minimum": 1,
-                            "format": "int32",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 9999,
-                            "minimum": 0,
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "scroll_token",
-                        "in": "query",
-                        "description": "An offset key for paginating between batches. Can be used for any number of records. Each search API response returns a scroll_token which can be used to fetch the next size records.",
-                        "schema": {
-                            "type": "string",
-                            "default": ""
-                        }
-                    },
-                    {
-                        "name": "titlecase",
-                        "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
-                        }
-                    },
-                    {
-                        "name": "pretty",
-                        "in": "query",
-                        "description": "Whether the output should have human-readable indentation.",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
-                        }
-                    },
-                    {
-                        "name": "dataset",
-                        "in": "query",
-                        "description": "The dataset category to return records from. Can be multiple comma seperated categories or all",
-                        "schema": {
-                            "type": "string",
-                            "default": "resume"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "query": {
+                                        "type": "string",
+                                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference.",
+                                        "example": "{\"query\": {\"term\": {\"industry\": \"computer software\"}}}"
+                                    },
+                                    "sql": {
+                                        "type": "string",
+                                        "description": "A SQL query of the format: SELECT * FROM person WHERE XXX, where XXX is a standard SQL boolean query involving our person fields",
+                                        "example": "SELECT * FROM person WHERE industry ='computer software'"
+                                    },
+                                    "size": {
+                                        "type": "integer",
+                                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
+                                        "maximum": 100,
+                                        "minimum": 1,
+                                        "format": "int32",
+                                        "default": 1
+                                    },
+                                    "count_only": {
+                                        "type": "boolean",
+                                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                                        "default": false
+                                    },
+                                    "from": {
+                                        "type": "integer",
+                                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
+                                        "maximum": 9999,
+                                        "minimum": 0,
+                                        "format": "int32",
+                                        "default": 0
+                                    },
+                                    "scroll_token": {
+                                        "type": "string",
+                                        "description": "Each search API response returns a scroll_token. Include it in the next request to fetch the next size matching records",
+                                        "example": "104$14.278746"
+                                    },
+                                    "dataset": {
+                                        "type": "string",
+                                        "description": "Specifies which dataset(s) the API should search against",
+                                        "default": "resume",
+                                        "example": "all"
+                                    },
+                                    "titlecase": {
+                                        "type": "boolean",
+                                        "description": "Setting titlecase to true will will titlecase any records returned",
+                                        "default": false
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation.",
+                                        "default": false
+                                    }
+                                },
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "query"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "sql"
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Person Found",
@@ -8528,6 +8587,162 @@
                     }
                 },
                 "summary": "/person/search",
+                "tags": [
+                    "Person Endpoints"
+                ]
+            }
+        },
+        "/v5/person/retrieve/{person_id}": {
+            "get": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "The content type",
+                        "schema": {
+                            "type": "string",
+                            "default": "application/json",
+                            "enum": [
+                                "application/json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "person_id",
+                        "in": "path",
+                        "description": "The ID of a person",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "titlecase",
+                        "in": "query",
+                        "description": "Setting titlecase to true will titlecase the person data in 200 responses.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Person Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonRetrieve"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quick"
+                    }
+                },
+                "summary": "/person/retrieve",
+                "tags": [
+                    "Person Endpoints"
+                ]
+            }
+        },
+        "/v5/person/retrieve/bulk": {
+            "post": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "The content type",
+                        "schema": {
+                            "type": "string",
+                            "default": "application/json",
+                            "enum": [
+                                "application/json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "titlecase",
+                        "in": "query",
+                        "description": "Setting titlecase to true will titlecase the person data in 200 responses.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request object containing a list of Person IDs.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "requests": {
+                                        "type": "array",
+                                        "description": "requests contains a list of objects that have a Person ID and optional metadata object."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Person Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonRetrieveBulk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quick"
+                    }
+                },
+                "summary": "/person/retrieve/bulk",
                 "tags": [
                     "Person Endpoints"
                 ]
@@ -8811,7 +9026,7 @@
                     {
                         "name": "pdl_id",
                         "in": "query",
-                        "description": "The PDL ID of the company to enrich",
+                        "description": "The PDL ID of the company to enrich.",
                         "schema": {
                             "type": "string"
                         }
@@ -8819,15 +9034,7 @@
                     {
                         "name": "name",
                         "in": "query",
-                        "description": "The name of the company",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "website",
-                        "in": "query",
-                        "description": "A website the company uses",
+                        "description": "The name of the company.",
                         "schema": {
                             "type": "string"
                         }
@@ -8835,7 +9042,71 @@
                     {
                         "name": "profile",
                         "in": "query",
-                        "description": "A social profile of the company (linkedin/facebook/twitter/crunchbase)",
+                        "description": "A social profile of the company (linkedin/facebook/twitter/crunchbase).",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ticker",
+                        "in": "query",
+                        "description": "The company's stock ticker, if publicly traded.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "website",
+                        "in": "query",
+                        "description": "A website the company uses.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "description": "The location of the company's headquarters. This can be anything from a street address to a country name.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "street_address",
+                        "in": "query",
+                        "description": "The company HQ's street address.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "locality",
+                        "in": "query",
+                        "description": "The company HQ's locality. e.g. San Francisco",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "region",
+                        "in": "query",
+                        "description": "The company HQ's region. e.g. California",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "country",
+                        "in": "query",
+                        "description": "The company HQ's country.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "postal_code",
+                        "in": "query",
+                        "description": "The company HQ's postal code.",
                         "schema": {
                             "type": "string"
                         }
@@ -8847,6 +9118,45 @@
                         "schema": {
                             "type": "boolean",
                             "default": false
+                        }
+                    },
+                    {
+                        "name": "titlecase",
+                        "in": "query",
+                        "description": "All text in API responses returns as lowercase by default. Setting titlecase to true will titlecase response data instead.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "include_if_matched",
+                        "in": "query",
+                        "description": "If true, the response will include the top-level field matched that contains a list of every input that matched this profile.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "min_likelihood",
+                        "in": "query",
+                        "description": "The minimum likelihood score a response must possess in order to return a 200.",
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 10,
+                            "minimum": 0,
+                            "format": "int32",
+                            "default": 2
+                        }
+                    },
+                    {
+                        "name": "required",
+                        "in": "query",
+                        "description": "The fields a response must have in order to count as a match.",
+                        "schema": {
+                            "type": "string",
+                            "example": "location AND (website OR linkedin_url)"
                         }
                     }
                 ],
@@ -8935,6 +9245,15 @@
                         }
                     },
                     {
+                        "name": "count_only",
+                        "in": "query",
+                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
                         "name": "from",
                         "in": "query",
                         "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
@@ -8944,6 +9263,15 @@
                             "minimum": 0,
                             "format": "int32",
                             "default": 0
+                        }
+                    },
+                    {
+                        "name": "scroll_token",
+                        "in": "query",
+                        "description": "Setting titlecase to true will will titlecase any records returned",
+                        "schema": {
+                            "type": "string",
+                            "example": "104$14.278746"
                         }
                     },
                     {
@@ -9006,78 +9334,76 @@
                         "APIKeyHeader": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "description": "The content type",
-                        "schema": {
-                            "type": "string",
-                            "default": "application/json",
-                            "enum": [
-                                "application/json"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "query",
-                        "in": "query",
-                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sql",
-                        "in": "query",
-                        "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving PDL fields. Any use of column selections or the LIMIT keyword will be ignored.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 100,
-                            "minimum": 1,
-                            "format": "int32",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 9999,
-                            "minimum": 0,
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "titlecase",
-                        "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
-                        }
-                    },
-                    {
-                        "name": "pretty",
-                        "in": "query",
-                        "description": "Whether the output should have human-readable indentation.",
-                        "schema": {
-                            "type": "boolean",
-                            "default": false
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "query": {
+                                        "type": "string",
+                                        "description": "An Elasticsearch (v7.7) query. See our underlying Elasticsearch mapping for reference",
+                                        "example": "{\"query\": {\"term\": {\"industry\": \"computer software\"}}}"
+                                    },
+                                    "sql": {
+                                        "type": "string",
+                                        "description": "A SQL query of the format: SELECT * FROM company WHERE XXX, where XXX is a standard SQL boolean query involving our company fields",
+                                        "example": "SELECT * FROM person WHERE industry ='computer software'"
+                                    },
+                                    "size": {
+                                        "type": "integer",
+                                        "description": "The number of matched records to return for this query if they exist*. Must be between 1 and 100",
+                                        "maximum": 100,
+                                        "minimum": 1,
+                                        "format": "int32",
+                                        "default": 1
+                                    },
+                                    "count_only": {
+                                        "type": "boolean",
+                                        "description": "Setting count_only to true will return only the total number of records that would be returned if the query was run. Available for paid plans only.",
+                                        "default": false
+                                    },
+                                    "from": {
+                                        "type": "integer",
+                                        "description": "An offset value for pagination. Can be a number between 0 and 9999. Pagination can be executed up to a maximum of 10,000 records per query. Be sure to use the \"total\" response field to help discover how many total records exist in the dataset for your query",
+                                        "maximum": 9999,
+                                        "minimum": 0,
+                                        "format": "int32",
+                                        "default": 0
+                                    },
+                                    "scroll_token": {
+                                        "type": "string",
+                                        "description": "Each search API response returns a scroll_token. Include it in the next request to fetch the next size matching records",
+                                        "example": "104$14.278746"
+                                    },
+                                    "titlecase": {
+                                        "type": "boolean",
+                                        "description": "Setting titlecase to true will will titlecase any records returned",
+                                        "default": false
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation",
+                                        "default": false
+                                    }
+                                },
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "query"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "sql"
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Company Found",
