@@ -8006,7 +8006,7 @@
                     {
                         "name": "data_include",
                         "in": "query",
-                        "description": "A comma-separated string of fields that you would like the response to include. eg. \"names.clean,emails.address\". Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\".",
+                        "description": "A comma-separated string of fields that you would like the response to include. Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\"",
                         "schema": {
                             "type": "string",
                             "example": "full_name,emails.address"
@@ -8088,7 +8088,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/person/enrich",
@@ -8298,6 +8298,15 @@
                         }
                     },
                     {
+                        "name": "data_include",
+                        "in": "query",
+                        "description": "A comma-separated string of fields that you would like the response to include. Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\"",
+                        "schema": {
+                            "type": "string",
+                            "example": "full_name,emails.address"
+                        }
+                    },
+                    {
                         "name": "include_if_matched",
                         "in": "query",
                         "description": "If true, the response will include the field matches.matched_on that contains a list of every query input that matched this profile",
@@ -8334,7 +8343,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/person/identify",
@@ -8423,10 +8432,19 @@
                     {
                         "name": "titlecase",
                         "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
+                        "description": "Setting titlecase to true will titlecase any records returned",
                         "schema": {
                             "type": "boolean",
                             "default": false
+                        }
+                    },
+                    {
+                        "name": "data_include",
+                        "in": "query",
+                        "description": "A comma-separated string of fields that you would like the response to include. Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\"",
+                        "schema": {
+                            "type": "string",
+                            "example": "full_name,emails.address"
                         }
                     },
                     {
@@ -8466,7 +8484,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/person/search",
@@ -8531,8 +8549,13 @@
                                     },
                                     "titlecase": {
                                         "type": "boolean",
-                                        "description": "Setting titlecase to true will will titlecase any records returned",
+                                        "description": "Setting titlecase to true will titlecase any records returned",
                                         "default": false
+                                    },
+                                    "data_include": {
+                                        "type": "string",
+                                        "description": "A comma-separated string of fields that you would like the response to include. Begin the string with a - if you would instead like to exclude the specified fields. If you would like to exclude all data from being returned, use data_include=\"\"",
+                                        "example": "full_name,emails.address"
                                     },
                                     "pretty": {
                                         "type": "boolean",
@@ -8583,7 +8606,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/person/search",
@@ -8658,7 +8681,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/person/retrieve",
@@ -8739,7 +8762,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/person/retrieve/bulk",
@@ -8829,7 +8852,80 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
+                    }
+                },
+                "summary": "/company/clean",
+                "tags": [
+                    "Cleaner Endpoints"
+                ]
+            },
+            "post": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the company",
+                                        "example": "peopledatalabs"
+                                    },
+                                    "website": {
+                                        "type": "string",
+                                        "description": "A website the company uses",
+                                        "example": "www.peopledatalabs.com"
+                                    },
+                                    "profile": {
+                                        "type": "string",
+                                        "description": "A social profile used by the company (e.g. LinkedIn/Facebook/Twitter)",
+                                        "example": "www.linkedin.com/company/peopledatalabs"
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Company Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/company/clean",
@@ -8877,7 +8973,7 @@
                     {
                         "name": "profile",
                         "in": "query",
-                        "description": "A social profile of the company (linkedin/facebook/twitter)",
+                        "description": "A social profile used by the school (e.g. LinkedIn/Facebook/Twitter)",
                         "schema": {
                             "type": "string"
                         }
@@ -8919,7 +9015,80 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
+                    }
+                },
+                "summary": "/school/clean",
+                "tags": [
+                    "Cleaner Endpoints"
+                ]
+            },
+            "post": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the school",
+                                        "example": "Univeristy of Colorado Denver"
+                                    },
+                                    "website": {
+                                        "type": "string",
+                                        "description": "A website the school uses",
+                                        "example": "www.ucdenver.edu"
+                                    },
+                                    "profile": {
+                                        "type": "string",
+                                        "description": "A social profile used by the school (e.g. LinkedIn/Facebook/Twitter)",
+                                        "example": "www.linkedin.com/school/university-of-colorado-denver"
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "School Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/School"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/school/clean",
@@ -8994,7 +9163,70 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
+                    }
+                },
+                "summary": "/location/clean",
+                "tags": [
+                    "Cleaner Endpoints"
+                ]
+            },
+            "post": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "location": {
+                                        "type": "string",
+                                        "description": "The raw location to process",
+                                        "example": "San Francisco"
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Location Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/location/clean",
@@ -9187,7 +9419,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/company/enrich",
@@ -9268,7 +9500,7 @@
                     {
                         "name": "scroll_token",
                         "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
+                        "description": "Setting titlecase to true will titlecase any records returned",
                         "schema": {
                             "type": "string",
                             "example": "104$14.278746"
@@ -9277,7 +9509,7 @@
                     {
                         "name": "titlecase",
                         "in": "query",
-                        "description": "Setting titlecase to true will will titlecase any records returned",
+                        "description": "Setting titlecase to true will titlecase any records returned",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -9320,7 +9552,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/company/search",
@@ -9379,7 +9611,7 @@
                                     },
                                     "titlecase": {
                                         "type": "boolean",
-                                        "description": "Setting titlecase to true will will titlecase any records returned",
+                                        "description": "Setting titlecase to true will titlecase any records returned",
                                         "default": false
                                     },
                                     "pretty": {
@@ -9431,7 +9663,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/company/search",
@@ -9464,7 +9696,7 @@
                     {
                         "name": "field",
                         "in": "query",
-                        "description": "Field that autocomplete will be calculated for.",
+                        "description": "An enumerated field that will be used to calculate the autocompletion",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -9486,7 +9718,7 @@
                     {
                         "name": "text",
                         "in": "query",
-                        "description": "Text that is used as the seed for autocompletion.",
+                        "description": "Text that is used as the seed for autocompletion",
                         "schema": {
                             "type": "string",
                             "default": ""
@@ -9495,16 +9727,25 @@
                     {
                         "name": "size",
                         "in": "query",
-                        "description": "Numbers of results returned for autocompletion.",
+                        "description": "Numbers of results returned for autocompletion",
                         "schema": {
                             "type": "integer",
                             "default": 10
                         }
                     },
                     {
+                        "name": "titlecase",
+                        "in": "query",
+                        "description": "Setting to `true` will titlecase any records returned",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
                         "name": "pretty",
                         "in": "query",
-                        "description": "Whether the output should have human-readable indentation.",
+                        "description": "Whether the output should have human-readable indentation",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -9531,7 +9772,95 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
+                    }
+                },
+                "summary": "/autocomplete",
+                "tags": [
+                    "Autocomplete"
+                ]
+            },
+            "post": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "field": {
+                                        "type": "string",
+                                        "description": "An enumerated field that will be used to calculate the autocompletion",
+                                        "example": "company",
+                                        "enum": [
+                                            "company",
+                                            "country",
+                                            "industry",
+                                            "location",
+                                            "major",
+                                            "region",
+                                            "role",
+                                            "school",
+                                            "sub_role",
+                                            "skill",
+                                            "title"
+                                        ]
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Text that is used as the seed for autocompletion",
+                                        "example": "people da",
+                                        "default": ""
+                                    },
+                                    "size": {
+                                        "type": "integer",
+                                        "description": "The number of results returned for autocompletion",
+                                        "maximum": 100,
+                                        "minimum": 1,
+                                        "format": "int32",
+                                        "default": 10
+                                    },
+                                    "titlecase": {
+                                        "type": "boolean",
+                                        "description": "Setting titlecase to true will titlecase any records returned",
+                                        "default": false
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Autocompletion completed."
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/autocomplete",
@@ -9608,7 +9937,7 @@
                     {
                         "name": "titlecase",
                         "in": "query",
-                        "description": "Setting to `true` will will titlecase any records returned.",
+                        "description": "Setting to `true` will titlecase any records returned.",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -9651,7 +9980,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/ip/enrich",
@@ -9683,7 +10012,7 @@
                     {
                         "name": "job_title",
                         "in": "query",
-                        "description": "Job Title that will be enriched.",
+                        "description": "Job title that will be enriched",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -9692,7 +10021,7 @@
                     {
                         "name": "titlecase",
                         "in": "query",
-                        "description": "Setting to `true` will will titlecase any records returned.",
+                        "description": "Setting to `true` will titlecase any records returned",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -9701,7 +10030,7 @@
                     {
                         "name": "pretty",
                         "in": "query",
-                        "description": "Whether the output should have human-readable indentation.",
+                        "description": "Whether the output should have human-readable indentation",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -9735,7 +10064,75 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
+                    }
+                },
+                "summary": "/job_title/enrich",
+                "tags": [
+                    "Job Title Enrichment"
+                ]
+            },
+            "post": {
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "job_title": {
+                                        "type": "string",
+                                        "description": "Job title that will be enriched",
+                                        "example": "software engineer"
+                                    },
+                                    "titlecase": {
+                                        "type": "boolean",
+                                        "description": "Setting titlecase to true will titlecase any records returned",
+                                        "default": false
+                                    },
+                                    "pretty": {
+                                        "type": "boolean",
+                                        "description": "Whether the output should have human-readable indentation",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Job Title enrich completed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobTitle"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request contained either missing or invalid parameters"
+                    },
+                    "401": {
+                        "description": "Request contained a missing or invalid key"
+                    },
+                    "402": {
+                        "description": "You have reached your account maximum (all matches used)"
+                    },
+                    "404": {
+                        "description": "No records were found matching your request"
+                    },
+                    "405": {
+                        "description": "Request method is not allowed on the requested resource"
+                    },
+                    "429": {
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/job_title/enrich",
@@ -9776,7 +10173,7 @@
                     {
                         "name": "titlecase",
                         "in": "query",
-                        "description": "Setting to `true` will will titlecase any records returned.",
+                        "description": "Setting to `true` will titlecase any records returned.",
                         "schema": {
                             "type": "boolean",
                             "default": false
@@ -9819,7 +10216,7 @@
                         "description": "Request method is not allowed on the requested resource"
                     },
                     "429": {
-                        "description": "An error occurred due to requests hitting the API too quick"
+                        "description": "An error occurred due to requests hitting the API too quickly"
                     }
                 },
                 "summary": "/skill/enrich",
